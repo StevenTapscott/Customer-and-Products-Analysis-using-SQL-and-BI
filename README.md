@@ -2,203 +2,305 @@
 
 ## Project Overview
 
-This project delivers an end-to-end data analytics and business intelligence solution covering **database migration, ETL, SQL analysis, data validation, Power BI modelling, DAX, interactive dashboard development, and business insight**.
+This project delivers an end-to-end data analytics and business intelligence solution covering database migration, ETL, SQL analysis, data validation, Power BI modelling, DAX, interactive dashboard development, and business insight.
 
-The project began with the Classic Models database in **SQLite**. The source data was migrated into **Microsoft SQL Server**, where the relational database was reconstructed and validated before SQL analysis was performed. The analytical logic was then extended into Power BI to create interactive reporting covering product performance, inventory management, customer segmentation, geographic markets, and historical customer lifetime value.
+The project began with Dataquest's **Customers and Products Analysis Using SQL** guided project, based on the Classic Models scale-model vehicle sales database. The original project focuses on using SQL to answer business questions relating to inventory, customer segmentation, and customer acquisition.
 
-The overall workflow was:
+I extended the project into a broader end-to-end portfolio solution by migrating the original SQLite database into Microsoft SQL Server, implementing an SSIS-based ETL workflow, validating the migrated data, extending the T-SQL analysis, and developing four Power BI analytical workstreams covering product performance, inventory management, customer segmentation, geographic markets, and historical customer lifetime value.
 
-**SQLite Source → ETL & Migration → SQL Server → Data Validation → SQL Analysis → Power BI Data Model → DAX → Interactive Dashboards → Business Insights**
+The overall workflow is:
+
+**SQLite Source → CSV Extraction → SSIS ETL → SQL Server → Migration Validation → T-SQL Analysis → Analytical Outputs → Power BI Data Models → DAX → Interactive Dashboards → Business Insights**
 
 ---
 
-## Business Objectives
+# Original Project and Portfolio Extension
 
-The analysis was designed around the following business questions:
+The starting point for this project was the Dataquest **Customers and Products Analysis Using SQL** guided project:
+
+[Customers and Products Analysis Using SQL – Dataquest](https://www.dataquest.io/projects/guided-project-a-customers-and-products-analysis-using-sql/)
+
+The original project uses SQL techniques including joins, subqueries, Common Table Expressions (CTEs), aggregation, and nested queries to analyse a scale-model vehicle sales database.
+
+Its principal business questions include:
+
+1. Which products should be ordered more or less frequently?
+2. How should marketing and communication strategies be matched to customer behaviour?
+3. Which customers are particularly valuable or less engaged?
+4. How much could the business potentially spend acquiring new customers?
+
+This portfolio implementation substantially extends that starting point through:
+
+- SQLite-to-SQL Server database migration
+- CSV extraction and staging
+- SQL Server Integration Services (SSIS)
+- SQL Server staging and production tables
+- Primary and foreign-key relationships
+- Source-to-target validation
+- Migration reconciliation
+- Extended T-SQL analysis
+- Product and product-line performance analysis
+- Inventory and replenishment analysis
+- Product ranking and prioritisation
+- Customer value segmentation
+- Purchase-frequency segmentation
+- Geographic market analysis
+- Historical Customer Lifetime Value analysis
+- Customer acquisition investment scenarios
+- Power BI relational data modelling
+- DAX measures and calculated logic
+- Dynamic parameter-driven filtering
+- Conditional formatting
+- Interactive executive dashboards
+- Detailed analytical reporting
+
+The resulting repository therefore represents an extended portfolio implementation built from the original guided SQL scenario.
+
+---
+
+# Business Objectives
+
+The completed solution addresses the following business questions:
 
 1. Which products and product lines generate the strongest sales performance?
 2. How does historical product demand compare with current inventory?
 3. Which products may require replenishment attention?
 4. How can customers be segmented using purchase history and purchasing behaviour?
 5. Which customers and geographic markets generate the greatest value?
-6. What is the historical lifetime profitability of customers?
-7. How could customer lifetime value be used to establish indicative customer acquisition investment scenarios?
+6. Which customers have no recorded purchases and may warrant re-engagement?
+7. What is the historical lifetime profitability of customers?
+8. How could historical customer value inform indicative customer acquisition investment?
 
 ---
 
-## Tools and Technologies
+# Tools and Technologies
 
-- SQLite
-- Microsoft SQL Server
-- SQL Server Management Studio (SSMS)
-- Power BI Desktop
-- Power Query
-- DAX
-- Relational data modelling
-- Data visualisation
-- Business intelligence reporting
+| Area | Technology |
+|---|---|
+| Source Database | SQLite |
+| Target Database | Microsoft SQL Server |
+| Database Development | SQL Server Management Studio (SSMS) |
+| ETL | SQL Server Integration Services (SSIS) |
+| Data Exchange | CSV |
+| Analysis | T-SQL |
+| BI Platform | Power BI Desktop |
+| Transformation | Power Query |
+| Calculations | DAX |
+| Geographic Visualisation | Power BI Shape Map / TopoJSON |
+| Validation | SQL reconciliation and Power BI validation |
+| Version Control | GitHub |
 
 ---
 
 # Data Engineering and ETL
 
+## SQLite Source Database
+
+The project began with the Classic Models SQLite database.
+
+The original source contains tables covering:
+
+- customers
+- employees
+- offices
+- orderdetails
+- orders
+- payments
+- productlines
+- products
+
+The original `classic.db` database and source-table documentation are retained within:
+
+`raw database/`
+
+This preserves the original source separately from the SQL Server implementation.
+
+---
+
 ## SQLite to SQL Server Migration
 
-The source Classic Models database was originally provided in SQLite and was migrated into Microsoft SQL Server to create a more representative relational database environment for analysis and reporting.
+Rather than conducting the entire portfolio project directly against SQLite, the database was migrated into Microsoft SQL Server to create a more representative relational data environment.
 
-The migration process involved:
-
-1. Reviewing the SQLite source database and identifying the available tables and relationships.
-2. Inspecting source column structures and data types.
-3. Creating the corresponding database structure in SQL Server.
-4. Migrating source data from SQLite into SQL Server.
-5. Resolving compatibility differences between SQLite and SQL Server where required.
-6. Checking primary and foreign-key relationships.
-7. Validating migrated row counts and table structures.
-8. Checking for missing, unexpected, or incorrectly transformed values.
-9. Confirming that the migrated database supported the required analytical queries.
-10. Using the validated SQL Server database as the foundation for downstream analysis and Power BI reporting.
-
-This ensured that analysis was performed against a validated SQL Server implementation rather than directly against the original source database.
-
-## ETL and Reporting Workflow
+The migration followed:
 
 ```text
 Classic Models SQLite Database
-              |
-              v
-      Source Inspection
-              |
-              v
-       Data Extraction
-              |
-              v
- Transformation / Type Handling
-              |
-              v
-     Microsoft SQL Server
-              |
-              v
-       Data Validation
-              |
-              v
-        SQL Analysis
-              |
-              v
-       Power BI Model
-              |
-              v
+            |
+            v
+     Source Inspection
+            |
+            v
+      CSV Extraction
+            |
+            v
+        SSIS ETL
+            |
+            v
+   SQL Server Staging
+            |
+            v
+   Production Tables
+            |
+            v
+   Migration Validation
+            |
+            v
+      T-SQL Analysis
+            |
+            v
+   Analytical Outputs
+            |
+            v
+      Power BI Models
+            |
+            v
        DAX Measures
-              |
-              v
- Interactive BI Dashboards
-              |
-              v
-     Business Findings
+            |
+            v
+ Interactive Dashboards
+            |
+            v
+     Business Insights
 ```
+
+The source tables were exported into individual CSV datasets and loaded into SQL Server using dedicated SSIS packages.
+
+Separate `.dtsx` packages were retained for:
+
+- customers
+- employees
+- offices
+- orderdetails
+- orders
+- payments
+- productlines
+- products
+
+This makes the migration process auditable within the repository rather than treating the SQL Server database as an unexplained starting point.
+
+---
+
+# Migration Validation and Reconciliation
+
+Validation was incorporated directly into the migration workflow.
+
+Dedicated SQL validation scripts were created for each migrated table:
+
+- `01_offices_validation.sql`
+- `02_employees_validation.sql`
+- `03_customers_validation.sql`
+- `04_productlines_validation.sql`
+- `05_products_validation.sql`
+- `06_orders_validation.sql`
+- `07_orderdetails_validation.sql`
+- `08_payments_validation.sql`
+
+Validation covered areas including:
+
+- row counts
+- source-to-target completeness
+- table structures
+- data types
+- null values
+- key fields
+- migrated values
+- relationship integrity
+- analytical totals
+
+Validation outputs are retained separately within the repository.
+
+The complete validation framework subsequently extended beyond migration:
+
+**Source Validation → Migration Validation → SQL Validation → Power BI Validation → Interactive Filter Testing**
 
 ---
 
 # SQL Analysis Process
 
-Following migration and validation, SQL was used as the primary analytical layer before Power BI development.
+Following migration and validation, SQL Server became the primary analytical layer.
 
-## 1. Define the Business Requirement
+The SQL development process followed a structured sequence:
 
-Each analytical section began with a defined business question covering areas including:
+### 1. Database Creation
 
-- product performance;
-- inventory and replenishment;
-- customer purchasing behaviour;
-- customer segmentation;
-- geographic performance; and
-- customer lifetime value.
+The target SQL Server database was created and configured.
 
-## 2. Identify Required Tables and Relationships
+### 2. Table Creation
 
-Relevant relational tables were identified before queries were developed.
+Initial relational structures were created to receive the migrated source data.
 
-Core tables included:
+### 3. Production Tables
 
-- `customers`
-- `orders`
-- `orderdetails`
-- `products`
-- `productlines`
+Final production tables were created with the appropriate relational structures and data types.
 
-This allowed the analysis to move between customer, order, order-line, product, and product-line levels while maintaining the appropriate analytical granularity.
+### 4. Data Transfer
 
-## 3. Develop SQL Analysis
+Data was transferred into the final analytical tables.
 
-SQL was used to transform transactional records into business-level analytical outputs using techniques including:
+### 5. Validation
 
-- multi-table `JOIN` operations;
-- `WHERE` filtering;
-- `GROUP BY` aggregation;
-- `ORDER BY`;
-- aggregate functions;
-- calculated expressions;
-- conditional logic;
-- customer-level aggregation;
-- product-level aggregation; and
-- relational analysis across multiple tables.
+SQL checks were performed before business analysis began.
 
-The resulting queries supported analysis of revenue, order activity, product performance, inventory, customer behaviour, geographic markets, segmentation, and customer profitability.
+### 6. Product Sales Analysis
 
-## 4. Validate SQL Results
+Revenue, units sold, product performance, and product-line performance were analysed.
 
-Outputs were validated before being used as business findings or reproduced in Power BI.
+### 7. Inventory Analysis
 
-Checks included:
+Historical product demand was compared with available inventory.
 
-- row counts;
-- customer counts;
-- order counts;
-- revenue totals;
-- units sold;
-- inventory metrics;
-- customer segmentation totals; and
-- customer lifetime value calculations.
+### 8. Product Ranking and Priority Classification
 
-## 5. Translate Results into Business Metrics
+Products were ranked and classified according to inventory and demand characteristics.
 
-SQL outputs were interpreted in business terms to identify:
+### 9. Customer Segmentation
 
-- leading products and product lines;
-- products exposed to inventory pressure;
-- high-value customers;
-- frequent and repeat customers;
-- customers with no recorded purchases;
-- high-value geographic markets; and
-- customers generating the greatest historical gross profit.
+Customers were analysed according to purchasing value and behaviour.
 
-## 6. Reproduce and Extend the Analysis in Power BI
+### 10. Geographic Segmentation
 
-Validated SQL results provided benchmarks for the Power BI implementation.
+Customer and revenue performance were analysed geographically.
 
-DAX measures reproduced and extended the SQL calculations while allowing results to respond dynamically to report filter context.
+### 11. Customer Lifetime Value
 
-The reconciliation process followed:
+Historical customer profitability was calculated using estimated gross profit.
 
-```text
-Source Data
-    ↓
-SQL Result
-    ↓
-Power BI / DAX Result
-    ↓
-Reconciliation
-    ↓
-Dashboard
-```
+### 12. Acquisition Benchmark Analysis
 
-This provided an additional validation layer before analytical results were presented to report users.
+Historical CLV was used to develop indicative customer-acquisition investment scenarios.
+
+SQL outputs were exported to Excel and retained in `SQL queries/outputs/`, providing an auditable record of the analytical results used for validation and Power BI development.
+
+---
+
+# SQL Techniques Demonstrated
+
+The project applies SQL techniques including:
+
+- multi-table `JOIN` operations
+- subqueries
+- Common Table Expressions (CTEs)
+- aggregation
+- `GROUP BY`
+- `ORDER BY`
+- filtering
+- conditional logic
+- calculated expressions
+- product-level aggregation
+- customer-level aggregation
+- ranking
+- segmentation
+- relational analysis
+- validation queries
+- reconciliation
+
+The analysis moves from transactional-level data to decision-ready product, inventory, customer, geographic, and profitability outputs.
 
 ---
 
 # Data Model
 
-Power BI models were constructed according to the requirements of each analytical dashboard rather than importing unnecessary tables into every report.
+Power BI models were constructed according to the analytical requirements of each reporting area rather than importing unnecessary tables into every report.
 
 ## Customer Analysis
 
@@ -230,17 +332,15 @@ orderdetails
 products
 ```
 
-The addition of `products` enabled `buyPrice` to be combined with transactional selling prices to calculate estimated gross profit and historical customer lifetime value.
+The addition of `products` enables product `buyPrice` to be combined with transactional selling prices when estimating customer-level gross profit.
 
-Relationships were validated before DAX measures and report visuals were developed.
+Each Power BI workstream contains its own `schema/` directory containing supporting model documentation.
 
 ---
 
 # Core Business Measures
 
 ## Total Revenue
-
-Revenue was calculated from the quantity ordered multiplied by the selling price of each order line.
 
 ```DAX
 Total Revenue =
@@ -287,40 +387,30 @@ DIVIDE(
 
 # Product and Inventory Analysis
 
-The product and inventory analysis examines historical product demand alongside current inventory levels to identify commercially important products and potential replenishment requirements.
+The product and inventory workstream combines commercial performance with historical demand and current stock.
 
-The analysis includes:
+Analysis includes:
 
-- product and product-line revenue;
-- units sold;
-- current stock;
-- Sales-to-Stock Ratio;
-- Low Stock Status;
-- Replenishment Status; and
-- Priority Products.
+- product revenue
+- product-line revenue
+- units sold
+- current stock
+- Sales-to-Stock Ratio
+- Low Stock Status
+- Replenishment Status
+- Priority Products
 
-Rather than relying exclusively on absolute stock levels, historical demand was incorporated into the inventory analysis to provide additional context around potential replenishment requirements.
+Historical demand provides additional context that cannot be obtained by assessing absolute stock levels alone.
 
-## Sales-to-Stock Analysis
-
-A Sales-to-Stock Ratio was used to compare historical sales volume with available inventory.
-
-This helps distinguish between products with low stock but limited historical demand and products where historical sales are comparatively high relative to current stock.
-
-Dynamic filtering allows report users to specify a minimum Sales-to-Stock Ratio and investigate products exceeding the selected threshold.
-
-Conditional formatting was also applied to detailed inventory reporting so that:
-
-- **Low Stock** products are highlighted; and
-- **Priority** replenishment products receive targeted highlighting.
+Products with strong historical sales relative to current inventory can therefore be identified for further replenishment investigation.
 
 ---
 
 # Customer Segmentation
 
-Customers were segmented using both economic value and purchasing frequency.
+Customers were segmented across two complementary dimensions.
 
-## Customer Value Segments
+## Customer Value
 
 Customers were classified into:
 
@@ -329,30 +419,26 @@ Customers were classified into:
 - Lower Mid Value
 - Low Value
 
-This provides a value-based view of the customer portfolio and supports identification of commercially important accounts.
+## Purchase Frequency
 
-## Purchase Frequency Segments
-
-Customers were also classified into:
+Customers were also classified as:
 
 - Frequent Buyer
 - Repeat Buyer
 - Occasional Buyer
 - No Purchases
 
-The two classifications provide complementary perspectives.
+Value segmentation represents the economic importance of the customer, while purchase-frequency segmentation describes purchasing behaviour.
 
-**Customer value** represents the economic importance of a customer, while **purchase frequency** describes purchasing behaviour.
-
-Combining the two dimensions provides a stronger basis for targeted marketing, retention, and re-engagement decisions than either measure alone.
+Combining these dimensions provides a stronger basis for targeted marketing, retention, and re-engagement activity.
 
 ---
 
 # Customer Lifetime Value
 
-The final analytical section estimates historical customer lifetime value using estimated gross profit generated from recorded purchasing activity.
+The final analytical workstream estimates **Historical Customer Lifetime Value** using the estimated gross profit generated from recorded purchasing activity.
 
-The project deliberately refers to this metric as **Historical CLV** because the available dataset supports analysis of realised historical profitability rather than prediction of future customer value.
+The term **Historical CLV** is used deliberately because the available data supports realised historical profitability analysis rather than prediction of future customer value.
 
 ## Estimated Gross Profit
 
@@ -386,8 +472,6 @@ Historical CLV =
 [Estimated Gross Profit]
 ```
 
-Historical CLV therefore represents the estimated gross profit generated by each customer during the period represented by the dataset.
-
 ## Average Customer CLV
 
 ```DAX
@@ -398,86 +482,34 @@ AVERAGEX(
 )
 ```
 
-The validated Average Historical Customer CLV was approximately:
+The validated Average Historical Customer CLV is approximately:
 
 **£39,039.59**
-
-## Customer Lifespan
-
-Customer lifespan was also calculated from the first and last recorded order dates.
-
-```DAX
-First Order Date =
-MIN(orders[orderDate])
-```
-
-```DAX
-Last Order Date =
-MAX(orders[orderDate])
-```
-
-```DAX
-Customer Lifespan Days =
-DATEDIFF(
-    [First Order Date],
-    [Last Order Date],
-    DAY
-)
-```
-
-This provides additional behavioural context when investigating customer-level historical profitability.
 
 ---
 
 # Customer Acquisition Scenarios
 
-Historical CLV was used to create indicative acquisition-investment scenarios.
+Historical CLV was used to establish three indicative acquisition-investment scenarios.
 
-Rather than presenting a single assumed acquisition budget, three scenarios were created representing 10%, 20%, and 30% of Average Historical Customer CLV.
-
-## 10% Scenario
-
-```DAX
-Acquisition Budget 10% =
-[Average Customer CLV] * 0.10
-```
-
-## 20% Scenario
-
-```DAX
-Acquisition Budget 20% =
-[Average Customer CLV] * 0.20
-```
-
-## 30% Scenario
-
-```DAX
-Acquisition Budget 30% =
-[Average Customer CLV] * 0.30
-```
-
-The validated results were:
-
-| Metric | Result |
+| Scenario | Value |
 |---|---:|
 | Average Historical Customer CLV | £39,039.59 |
 | 10% Acquisition Scenario | £3,903.96 |
 | 20% Acquisition Scenario | £7,807.92 |
 | 30% Acquisition Scenario | £11,711.88 |
 
-These values represent **scenario benchmarks rather than recommended customer acquisition budgets**.
+These figures are analytical benchmarks rather than recommended acquisition budgets.
 
-Actual Customer Acquisition Cost (CAC) data would be required before determining whether a specific acquisition-spend level is economically justified.
+Actual Customer Acquisition Cost (CAC), retention behaviour, churn probabilities, and future purchasing behaviour would be required before determining an economically justified production acquisition budget.
 
 ---
 
-# Dynamic CLV Filtering
+# Dynamic Analytical Filtering
 
-The Customer Lifetime Value Detail dashboard includes a dynamic **Minimum Historical CLV** parameter.
+The Power BI implementation includes measure-driven filtering using disconnected numeric parameters.
 
-A disconnected numeric parameter allows users to specify the minimum historical customer value they wish to investigate.
-
-A filtering measure evaluates each customer against the selected threshold:
+For example, the Customer Lifetime Value Detail report contains a **Minimum Historical CLV** parameter.
 
 ```DAX
 Show CLV Customer =
@@ -494,81 +526,67 @@ RETURN
     )
 ```
 
-The measure is applied as a visual-level filter.
+The measure is applied as a visual-level filter, allowing users to dynamically isolate customers above a selected profitability threshold.
 
-This allows users to dynamically answer questions such as:
-
-> Which customers have generated at least £50,000 in historical lifetime gross profit?
-
-The parameter was tested at multiple threshold values to confirm that the detail table responded correctly.
+A similar approach is used within inventory analysis to investigate products exceeding a selected Sales-to-Stock Ratio.
 
 ---
 
 # Power BI Dashboards
 
-The Power BI solution combines analytical overview dashboards with detailed investigation pages.
+The Power BI reporting layer is divided into four analytical workstreams.
 
-Dashboard designs were intentionally limited to a small number of primary visuals to maintain readability and avoid overcrowding.
-
----
-
-## Product Sales Performance
-
-The Product Sales Performance analysis examines commercial performance across individual products and product lines.
-
-The dashboard supports investigation of:
-
-- total revenue;
-- units sold;
-- product performance;
-- product-line performance; and
-- relative commercial contribution.
-
-This provides the commercial foundation for the subsequent inventory analysis.
+Dashboard design intentionally limits the number of primary visuals on each overview page to maintain readability and prevent overcrowding.
 
 ---
 
-## Inventory & Replenishment Analysis
+## 1. Product Sales Analysis
 
-The Inventory & Replenishment Analysis provides an executive-level view of inventory health.
+The Product Sales Analysis workstream examines commercial performance across products and product lines.
 
-The dashboard combines stock information with historical sales activity to identify products where inventory levels may warrant further investigation.
+### Sales Performance
 
-Analysis includes:
+![Sales Performance](power-bi/01_product-sales-analysis/screenshots/01_sales-performance.png)
 
-- current stock;
-- historical demand;
-- low-stock products;
-- replenishment status; and
-- priority products.
+The dashboard provides an executive view of overall sales performance and commercial contribution.
 
----
+### Product Performance
 
-## Inventory Demand Analysis
+![Product Performance](power-bi/01_product-sales-analysis/screenshots/02_product-performance.png)
 
-The Inventory Demand Analysis compares current inventory with historical product demand.
+Product-level analysis enables individual products and product lines to be compared according to revenue and sales activity.
 
-The dashboard includes analysis of:
+### Product Analysis Summary
 
-- Total Stock
-- Total Units Sold
-- Low Stock Products
-- Highest Sales-to-Stock Ratio
-- Priority Products
-- Demand vs Current Stock
-- Stock vs Historical Sales by Product Line
+![Product Analysis Summary](power-bi/01_product-sales-analysis/screenshots/03_summary.png)
 
-A scatter analysis is used to compare historical product demand with current inventory.
-
-Reference lines provide additional context when identifying products with unusual combinations of stock and historical demand.
+The summary page translates the analytical results into concise business findings.
 
 ---
 
-## Product Inventory Detail
+## 2. Inventory & Replenishment Analysis
 
-The Product Inventory Detail dashboard provides a customer-style drill-down experience at product level.
+This workstream combines historical sales activity with current inventory to identify products that may warrant replenishment attention.
 
-The table includes:
+### Inventory & Replenishment Overview
+
+![Inventory and Replenishment Analysis](power-bi/02_inventory-%26-replenishment-analysis/screenshots/01_inventory-replenishment.png)
+
+The executive dashboard summarises inventory health, low-stock products, historical demand, and replenishment priorities.
+
+### Inventory Demand Analysis
+
+![Inventory Demand Analysis](power-bi/02_inventory-%26-replenishment-analysis/screenshots/02_inventory-demand.png)
+
+The demand dashboard compares current inventory against historical product sales.
+
+Scatter analysis provides additional context when identifying unusual combinations of inventory and demand.
+
+### Product Inventory Detail
+
+![Product Inventory Detail](power-bi/02_inventory-%26-replenishment-analysis/screenshots/03_product_inventory_details.png)
+
+The detailed product table includes:
 
 - Product Name
 - Product Line
@@ -578,15 +596,23 @@ The table includes:
 - Low Stock Status
 - Replenishment Status
 
-Interactive filters allow users to investigate particular product lines, products, replenishment categories, order periods, and minimum Sales-to-Stock Ratio thresholds.
+Interactive filters allow investigation by product line, product, replenishment category, order period, and minimum Sales-to-Stock Ratio.
 
-Conditional formatting highlights **Low Stock** and **Priority** products so that products requiring attention can be identified quickly.
+Conditional formatting highlights low-stock and priority products.
+
+### Inventory Findings
+
+![Inventory Findings](power-bi/02_inventory-%26-replenishment-analysis/screenshots/04_findings.png)
 
 ---
 
-## Customer Segmentation Overview
+## 3. Customer Segmentation & Marketing Analysis
 
-The Customer Segmentation Overview analyses customer value and purchasing behaviour.
+Customer analysis combines purchasing value, purchase frequency, geographic location, revenue, and customer-level activity.
+
+### Customer Segmentation Overview
+
+![Customer Segmentation Overview](power-bi/03_customer-segmentation-marketing-analysis/screenshots/01_customer-segment-overview.png)
 
 Headline measures include:
 
@@ -602,50 +628,28 @@ The dashboard contains three primary analytical visuals:
 2. Top 10 Customers by Revenue
 3. Customers by Purchase Frequency
 
-The purchase-frequency analysis includes customers classified as:
+### Geographic Marketing Analysis
 
-- Frequent Buyer
-- Repeat Buyer
-- Occasional Buyer
-- No Purchases
+![Geographic Marketing Analysis](power-bi/03_customer-segmentation-marketing-analysis/screenshots/02_geographic-analysis.png)
 
-Interactive slicers allow the analysis to be filtered by:
+A dedicated geographic dashboard was created to prevent the main customer segmentation dashboard from becoming overcrowded.
 
-- Customer Segment
-- Purchase Frequency
-- Country
-- Order Date
+The dashboard analyses:
 
----
+- countries represented
+- purchasing customers
+- top revenue country
+- country-level revenue
+- customer segment
+- purchase frequency
 
-## Geographic Marketing Analysis
+The analysis identified customers across **27 countries**, with the **USA generating approximately £3.27M**, making it the strongest geographic market by revenue.
 
-A dedicated geographic dashboard was developed to prevent the customer segmentation dashboard from becoming overcrowded.
+### Customer Segmentation Detail
 
-Headline metrics include:
+![Customer Segmentation Detail](power-bi/03_customer-segmentation-marketing-analysis/screenshots/03_customer-segmentation-detail.png)
 
-- Countries
-- Purchasing Customers
-- Top Revenue Country
-- Top Country Revenue
-
-The analysis identified customers across **27 countries**.
-
-The **USA** was identified as the highest-revenue geographic market, generating approximately:
-
-**£3.27M**
-
-A Power BI Shape Map was used to visualise geographic revenue distribution.
-
-Interactive controls allow users to investigate geographic performance alongside customer value and purchase-frequency classifications.
-
----
-
-## Customer Segmentation Detail
-
-The Customer Segmentation Detail dashboard provides customer-level purchasing and segmentation information.
-
-The table includes:
+The detailed customer table includes:
 
 - Customer Name
 - Country
@@ -657,34 +661,53 @@ The table includes:
 - Purchase Frequency
 - Customer Count
 
-Interactive filters allow users to investigate customers according to:
-
-- Customer Segment
-- Purchase Frequency
-- Country
-- Order Date
-
 Validation confirmed:
 
-- **122 total customers**
-- **98 purchasing customers**
-- **24 customers with no purchases**
+**122 Total Customers = 98 Purchasing Customers + 24 No-Purchase Customers**
 
-Filtering specifically for **No Purchases** returned 24 customers, while excluding that classification returned 98 purchasing customers.
+The inclusion of Customer Count allows non-purchasing customers to remain visible even where transactional measures are blank.
 
-The two populations therefore reconcile exactly:
+### Customer Segmentation Summary
 
-**98 Purchasing Customers + 24 No Purchase Customers = 122 Total Customers**
-
-The detail view enables users to identify high-value and frequent customers while also isolating customers with no recorded purchases for potential re-engagement activity.
+![Customer Segmentation Summary](power-bi/03_customer-segmentation-marketing-analysis/screenshots/04_summary.png)
 
 ---
 
-## Customer Lifetime Value & Acquisition Analysis
+# Geographic Boundary Data
 
-The Customer Lifetime Value & Acquisition Analysis evaluates historical customer profitability and indicative acquisition-investment scenarios.
+The Geographic Marketing Analysis uses a Power BI **Shape Map** supported by:
 
-Headline metrics include:
+`countries-110m.json`
+
+The file is retained within:
+
+```text
+power-bi/
+└── 03_customer-segmentation-marketing-analysis/
+    └── countries-110m.json
+```
+
+The file comes from the **TopoJSON World Atlas** project and provides country-level geometry derived from **Natural Earth Admin 0 country boundaries at 1:110m scale**.
+
+The geographic boundary data supplies the map geometry only. Customer locations, segmentation, revenue, and all other business measures originate from the project database and Power BI model.
+
+Source:
+
+[TopoJSON World Atlas](https://github.com/topojson/world-atlas)
+
+The source repository's licence and attribution requirements should be retained when redistributing the geographic data.
+
+---
+
+# 4. Customer Lifetime Value & Acquisition Analysis
+
+The final reporting workstream evaluates customer-level historical profitability and indicative acquisition-investment scenarios.
+
+### Customer Lifetime Value & Acquisition Analysis
+
+![Customer Lifetime Value and Acquisition Analysis](power-bi/04_customer-lifetime-value/screenshots/01_clv-overview.png)
+
+Headline measures include:
 
 - Average Customer CLV
 - Acquisition Budget 10%
@@ -694,25 +717,17 @@ Headline metrics include:
 
 The dashboard contains three primary analytical visuals:
 
-1. **Orders vs Historical CLV**
-2. **Historical CLV by Customer Segment**
-3. **Top 10 Customers by Historical CLV**
+1. Orders vs Historical CLV
+2. Historical CLV by Customer Segment
+3. Top 10 Customers by Historical CLV
 
-The scatter analysis examines the relationship between purchasing frequency and historical profitability.
+The report intentionally excludes an Order Date slicer because Historical CLV represents lifetime-to-date profitability across the available dataset.
 
-Customer-segment analysis demonstrates how lifetime profitability is distributed across the customer value classifications.
+### Customer Lifetime Value Detail
 
-The Top 10 analysis identifies the individual customer accounts responsible for the greatest historical gross profit.
+![Customer Lifetime Value Detail](power-bi/04_customer-lifetime-value/screenshots/02_clv-detail.png)
 
-The dashboard intentionally excludes an Order Date slicer because Historical CLV is designed to represent lifetime-to-date value within the available dataset rather than value generated within an arbitrarily selected reporting period.
-
----
-
-## Customer Lifetime Value Detail
-
-The Customer Lifetime Value Detail dashboard provides detailed customer-level profitability and lifetime-value analysis.
-
-The table includes:
+The detailed report contains:
 
 - Customer Name
 - Country
@@ -725,25 +740,17 @@ The table includes:
 - Customer Segment
 - Purchase Frequency
 
-Customers are ranked by **Historical CLV descending**, allowing the most economically valuable customers to be identified immediately.
+Customers are ranked by Historical CLV, while the dynamic **Minimum Historical CLV** control allows users to investigate customers above a selected profitability threshold.
 
-Interactive controls include:
+### CLV Analysis Summary
 
-- Country
-- Customer Name
-- Minimum Historical CLV
-
-The dynamic Minimum Historical CLV parameter allows users to isolate customers above a selected lifetime-profitability threshold.
+![Customer Lifetime Value Summary](power-bi/04_customer-lifetime-value/screenshots/03_summary.png)
 
 ---
 
 # Validation and Reconciliation
 
-Validation was incorporated throughout the complete analytical workflow rather than being treated solely as a final-stage activity.
-
-The validation framework followed:
-
-**Source Validation → Migration Validation → SQL Validation → Power BI Validation → Interactive Filter Testing**
+Validation was incorporated throughout the complete analytical workflow.
 
 Key reconciled results include:
 
@@ -753,7 +760,7 @@ Key reconciled results include:
 | Purchasing Customers | 98 |
 | Customers with No Purchases | 24 |
 | Total Orders | 326 |
-| Total Units Purchased/Sold | 105,516 |
+| Total Units Purchased / Sold | 105,516 |
 | Total Revenue | £9.60M |
 | Estimated Gross Profit | £3.83M |
 | Gross Margin | 39.84% |
@@ -762,17 +769,27 @@ Key reconciled results include:
 | 20% Acquisition Scenario | £7.81K |
 | 30% Acquisition Scenario | £11.71K |
 
-SQL outputs were used as reference points when developing Power BI measures.
+SQL outputs were used as benchmarks when developing Power BI measures.
 
-This allowed the analytical workflow to verify that DAX calculations reproduced the expected SQL results before the measures were incorporated into dashboards.
+The reconciliation process therefore followed:
 
-Interactive filtering was also tested.
+```text
+Source Data
+    ↓
+Migration
+    ↓
+SQL Server
+    ↓
+SQL Result
+    ↓
+Power BI / DAX Result
+    ↓
+Reconciliation
+    ↓
+Dashboard
+```
 
-For example:
-
-- customer segmentation filters reconciled 98 purchasing customers and 24 no-purchase customers to the 122-customer population;
-- Minimum Historical CLV filtering was tested at different threshold values; and
-- dashboard measures were checked to ensure they responded appropriately to report filter context.
+Interactive filtering was also tested to ensure measures responded correctly to report filter context.
 
 ---
 
@@ -780,45 +797,33 @@ For example:
 
 ## Product and Inventory Performance
 
-Historical product demand varies considerably relative to available inventory.
+Historical product demand varies considerably relative to current inventory.
 
-The analysis demonstrates that inventory requirements cannot be assessed reliably from absolute stock levels alone.
+Absolute stock levels alone therefore provide an incomplete indication of replenishment requirements.
 
-Combining current inventory with historical sales activity provides a stronger indication of potential replenishment pressure and enables products requiring further attention to be prioritised.
+Combining current stock with historical sales enables products experiencing greater potential inventory pressure to be prioritised for investigation.
 
-Low Stock and Priority classifications provide users with a straightforward way of identifying products requiring investigation.
-
----
+The Sales-to-Stock Ratio, Low Stock Status, and Replenishment Status provide complementary indicators rather than relying on a single stock metric.
 
 ## Customer Segmentation
 
-The customer base contains substantial differences in both purchasing behaviour and economic value.
-
-The dataset contains:
+The customer population consists of:
 
 - **122 total customers**
 - **98 purchasing customers**
 - **24 customers with no recorded purchases**
 
-The 24 customers with no purchases represent a distinct group that can be isolated by country and investigated for potential re-engagement activity.
+The 24 non-purchasing customers form a distinct population that can be isolated by country and investigated for potential re-engagement.
 
-Value segmentation also allows commercially important customers to be distinguished from lower-value customer groups.
-
-Purchase-frequency segmentation provides a complementary behavioural perspective by separating frequent, repeat, occasional, and non-purchasing customers.
-
----
+Value segmentation identifies economically important customers, while purchase-frequency segmentation provides a complementary behavioural perspective.
 
 ## Geographic Performance
 
 Customers are distributed across **27 countries**.
 
-The **USA** represents the strongest geographic market by revenue, generating approximately:
+The **USA generates approximately £3.27M in revenue**, making it the strongest geographic market within the dataset.
 
-**£3.27M**
-
-This indicates substantial geographic concentration and provides a basis for prioritising high-value markets while investigating growth opportunities elsewhere.
-
----
+Geographic concentration therefore provides an additional dimension for marketing prioritisation.
 
 ## Customer Lifetime Value
 
@@ -828,70 +833,29 @@ The 98 purchasing customers generated approximately:
 - **£3.83M Estimated Gross Profit**
 - **39.84% Overall Gross Margin**
 
-Average Historical Customer CLV was approximately:
+Average Historical Customer CLV is approximately:
 
 **£39.04K**
 
-Customer lifetime profitability is highly concentrated.
+Historical customer profitability is highly concentrated.
 
-The strongest individual customers included:
+The strongest customers include:
 
 - **Euro+ Shopping Channel — approximately £326.5K Historical CLV**
 - **Mini Gifts Distributors Ltd. — approximately £236.8K Historical CLV**
 
-There is a substantial decline after these leading customers, demonstrating that historical customer profitability is not evenly distributed across the customer base.
+Historical CLV by value segment is approximately:
 
-The High Value customer segment generated approximately:
-
-**£1.77M Historical CLV**
-
-compared with approximately:
-
-- **£0.96M — Upper Mid Value**
-- **£0.67M — Lower Mid Value**
-- **£0.42M — Low Value**
+| Customer Segment | Historical CLV |
+|---|---:|
+| High Value | £1.77M |
+| Upper Mid Value | £0.96M |
+| Lower Mid Value | £0.67M |
+| Low Value | £0.42M |
 
 Higher purchasing frequency is generally associated with greater historical CLV, although frequency alone does not determine customer profitability.
 
-Revenue, order behaviour, product mix, and gross margin combine to produce materially different customer-value outcomes.
-
----
-
-# Key Analysis
-
-## Customer Segmentation Analysis
-
-Customer-level segmentation combines **purchase value, order frequency, units purchased, average order value, and geographic location** to provide a detailed view of customer behaviour.
-
-Customers can be filtered by value segment, purchase frequency, country, and order date, enabling users to identify:
-
-- high-value accounts;
-- frequent buyers;
-- repeat customers;
-- occasional customers; and
-- customers with no recorded purchases.
-
-The analysis therefore provides a basis for targeted retention, re-engagement, and marketing activity rather than treating the entire customer population as a homogeneous group.
-
----
-
-## Customer Lifetime Value Analysis
-
-The CLV analysis indicates that customer profitability is concentrated among a relatively small group of high-value customers.
-
-This suggests that customer acquisition and retention strategies should not treat all customers as economically equivalent.
-
-Characteristics associated with higher customer value — including purchasing frequency, revenue generation, and gross profitability — provide a basis for identifying customer profiles where greater marketing and retention investment may be justified.
-
-The acquisition-budget scenarios translate historical customer profitability into practical investment benchmarks.
-
-At an Average Historical Customer CLV of approximately **£39.04K**, allocating 10%–30% of historical value would correspond to approximately:
-
-**£3.90K–£11.71K per customer**
-
-These figures should be interpreted as **scenario benchmarks rather than recommended acquisition budgets**, because the dataset does not contain actual Customer Acquisition Cost, retention probabilities, or future churn information.
-
-The analysis therefore provides a historical profitability-based framework for acquisition decision-making rather than a predictive CLV model.
+Revenue, product mix, order behaviour, and gross margin combine to produce materially different customer-value outcomes.
 
 ---
 
@@ -901,23 +865,19 @@ The analysis therefore provides a historical profitability-based framework for a
 
 High-value customers contribute a disproportionate amount of historical profitability.
 
-Retention activity should therefore prioritise these relationships, particularly the highest-value repeat and frequent buyers.
-
----
+Retention activity should therefore prioritise these relationships, particularly high-value repeat and frequent buyers.
 
 ## Use CLV to Inform Acquisition Decisions
 
-Historical customer profitability provides a benchmark against which potential acquisition investment can be evaluated.
+Historical profitability provides a benchmark against which potential acquisition investment can be evaluated.
 
-The 10%, 20%, and 30% CLV scenarios provide indicative investment ranges rather than fixed acquisition budgets.
+The 10%, 20%, and 30% scenarios provide indicative investment ranges rather than fixed acquisition budgets.
 
-Actual acquisition costs should be incorporated before making production investment decisions.
-
----
+Actual acquisition costs should be incorporated before production investment decisions are made.
 
 ## Target Marketing by Customer Segment
 
-Different strategies can be developed for:
+Different marketing approaches can be developed for:
 
 - High Value customers
 - Upper Mid Value customers
@@ -928,31 +888,21 @@ Different strategies can be developed for:
 - Occasional Buyers
 - Customers with No Purchases
 
-This enables marketing activity to be aligned more closely with customer behaviour and economic value.
-
----
+This enables marketing activity to reflect both economic value and purchasing behaviour.
 
 ## Investigate Non-Purchasing Customers
 
-The **24 customers with no recorded purchases** represent a distinct group that may warrant investigation or re-engagement activity.
+The 24 customers with no recorded purchases represent a distinct group that may warrant investigation or re-engagement.
 
-Geographic and customer-level filtering can be used to identify these accounts for further analysis.
-
----
+Geographic and customer-level filtering enables these accounts to be identified.
 
 ## Prioritise Inventory Using Historical Demand
 
-Products with relatively strong historical demand and limited current inventory should receive greater replenishment attention than products with substantial inventory relative to historical sales.
-
-The Sales-to-Stock Ratio, Low Stock Status, and Replenishment Status provide complementary indicators for prioritising investigation.
-
----
+Products with relatively strong historical demand and limited current inventory should receive greater replenishment attention than products holding substantial stock relative to historical sales.
 
 ## Use Geographic Performance for Market Prioritisation
 
-High-revenue geographic markets can support targeted marketing investment, while lower-performing markets can be investigated for potential growth opportunities.
-
-The strong revenue contribution from the USA demonstrates the importance of understanding geographic concentration rather than analysing customer performance solely at an aggregate level.
+High-revenue markets can support targeted marketing investment, while lower-performing markets can be investigated for growth opportunities.
 
 ---
 
@@ -960,134 +910,243 @@ The strong revenue contribution from the USA demonstrates the importance of unde
 
 ## Historical Rather Than Predictive CLV
 
-Historical CLV in this project represents **realised historical gross profit**, not a predictive estimate of future customer lifetime value.
+Historical CLV represents realised estimated gross profit rather than a prediction of future customer lifetime value.
 
-The available dataset does not contain all information required for a full forward-looking CLV model, including:
+The dataset does not contain all variables required for a forward-looking CLV model, including:
 
-- actual Customer Acquisition Cost (CAC);
-- customer retention probabilities;
-- future churn probabilities;
-- marketing expenditure;
-- future purchase probabilities; and
-- discount rates for future cash flows.
+- actual Customer Acquisition Cost
+- retention probabilities
+- churn probabilities
+- marketing expenditure
+- future purchase probabilities
+- discount rates for future cash flows
 
 The acquisition scenarios should therefore be interpreted as analytical benchmarks rather than recommended marketing budgets.
 
-A production implementation could extend the analysis by incorporating predictive CLV and actual CAC.
-
-This would enable calculation of metrics such as:
+A future implementation could combine predictive CLV with actual CAC to calculate metrics such as:
 
 **CLV:CAC Ratio**
 
-and provide a stronger basis for evaluating expected returns from customer acquisition expenditure.
+## Historical Demand Rather Than Demand Forecasting
+
+Historical sales provide useful inventory context but do not constitute a demand forecast.
+
+A production inventory-planning solution could additionally incorporate:
+
+- sales forecasts
+- supplier lead times
+- reorder points
+- safety stock
+- seasonality
+- service-level targets
+- outstanding purchase orders
 
 ---
 
-## Historical Demand and Inventory
+# Repository Structure
 
-Historical sales activity provides useful context for inventory analysis but does not constitute a demand forecast.
+```text
+Customer-and-Products-Analysis-using-SQL-and-BI/
+│
+├── raw database/
+│   ├── classic.db
+│   ├── 01_tables.png
+│   ├── 02_customers.png
+│   ├── 03_employees.png
+│   ├── 04_offices.png
+│   ├── 05_orderdetails.png
+│   ├── 06_orders.png
+│   ├── 07_payments.png
+│   ├── 08_productlines.png
+│   └── 09_products.png
+│
+├── migrating to T-SQL/
+│   │
+│   ├── datasets/
+│   │   ├── customers.csv
+│   │   ├── employees.csv
+│   │   ├── offices.csv
+│   │   ├── orderdetails.csv
+│   │   ├── orders.csv
+│   │   ├── payments.csv
+│   │   ├── productlines.csv
+│   │   └── products.csv
+│   │
+│   ├── ssis/
+│   │   ├── import_customers.dtsx
+│   │   ├── import_employees.dtsx
+│   │   ├── import_offices.dtsx
+│   │   ├── import_orderdetails.dtsx
+│   │   ├── import_orders.dtsx
+│   │   ├── import_payments.dtsx
+│   │   ├── import_productlines.dtsx
+│   │   └── import_products.dtsx
+│   │
+│   └── validation-checks/
+│       ├── validation output/
+│       ├── 01_offices_validation.sql
+│       ├── 02_employees_validation.sql
+│       ├── 03_customers_validation.sql
+│       ├── 04_productlines_validation.sql
+│       ├── 05_products_validation.sql
+│       ├── 06_orders_validation.sql
+│       ├── 07_orderdetails_validation.sql
+│       └── 08_payments_validation.sql
+│
+├── SQL queries/
+│   │
+│   ├── schema/
+│   │   └── final-schema-smss.png
+│   │
+│   ├── outputs/
+│   │   ├── 05_validation.xlsx
+│   │   ├── 06a_product-sales-analysis.xlsx
+│   │   ├── 06b_product-line-summary.xlsx
+│   │   ├── 07a_product_analysis.xlsx
+│   │   ├── 07b_cte_analysis.xlsx
+│   │   ├── 07c_ranking-products.xlsx
+│   │   ├── 07d_priority-classification.xlsx
+│   │   ├── 08a_customer-segmentation.xlsx
+│   │   ├── 08b_quartile-segment.xlsx
+│   │   ├── 08c_geograpic-segment.xlsx
+│   │   ├── 09a_clv-analysis.xlsx
+│   │   └── 09b_benchmark-analysis.xlsx
+│   │
+│   ├── 01-creating-database.sql
+│   ├── 02_creating-tables.sql
+│   ├── 03_creating-final-production-tables.sql
+│   ├── 04_transfering-to-final-tables.sql
+│   ├── 05_validation.sql
+│   ├── 06a_product-sales-analysis.sql
+│   ├── 06b_product-line-summary.sql
+│   ├── 07a_product_analysis.sql
+│   ├── 07b_cte_analysis.sql
+│   ├── 07c_ranking-products.sql
+│   ├── 07d_priority-classification.sql
+│   ├── 08a_customer-segmentation.sql
+│   ├── 08b_quartile-segment.sql
+│   ├── 08c_geographic-segment.sql
+│   ├── 09a_clv-analysis.sql
+│   └── 09b_benchmark-analysis.sql
+│
+├── power-bi/
+│   │
+│   ├── 01_product-sales-analysis/
+│   │   ├── schema/
+│   │   ├── screenshots/
+│   │   └── product-sales-analysis.pbix
+│   │
+│   ├── 02_inventory-&-replenishment-analysis/
+│   │   ├── schema/
+│   │   ├── screenshots/
+│   │   └── inventory-analysis.pbix
+│   │
+│   ├── 03_customer-segmentation-marketing-analysis/
+│   │   ├── schema/
+│   │   ├── screenshots/
+│   │   ├── countries-110m.json
+│   │   └── customer-marketing-analysis.pbix
+│   │
+│   └── 04_customer-lifetime-value/
+│       ├── schema/
+│       ├── screenshots/
+│       └── customer-lva.pbix
+│
+├── docs/
+│   └── BRIEF.md
+│
+├── LICENSE
+└── README.md
+```
 
-Future inventory decisions could also incorporate:
+The repository is structured around the complete analytical lifecycle rather than solely the finished dashboards.
 
-- sales forecasts;
-- supplier lead times;
-- reorder points;
-- safety stock;
-- seasonality;
-- service-level targets; and
-- outstanding purchase orders.
+The principal workflow is:
 
-This would enable the inventory analysis to evolve from historical monitoring into a more comprehensive replenishment-planning solution.
-
----
-
-# External Geographic Data
-
-The Geographic Marketing Analysis uses external world boundary data to support the Power BI Shape Map.
-
-**World Atlas TopoJSON (`countries-110m.json`)** was used to provide country-level geographic boundaries.
-
-Source:
-
-**TopoJSON World Atlas — `topojson/world-atlas` GitHub repository**
-
-The geographic boundary source should be retained with the appropriate source and licence attribution when distributing the project.
+**Source Database → Extraction → SSIS → SQL Server → Validation → SQL Analysis → Analytical Outputs → Power BI → Business Insight**
 
 ---
 
 # Skills Demonstrated
 
-## Database and ETL
+### Database, ETL and Data Quality
 
 - SQLite
 - Microsoft SQL Server
 - SQL Server Management Studio
-- SQLite to SQL Server migration
+- SQL Server Integration Services
+- SQLite-to-SQL Server migration
 - ETL
-- Source-to-target migration
-- Relational database structures
-- Data-type handling
-- Data validation
-- Data reconciliation
-- Data integrity checking
+- CSV extraction
+- source-to-target migration
+- staging and production structures
+- relational database design
+- data-type handling
+- primary and foreign keys
+- migration validation
+- data reconciliation
+- data integrity checking
 
-## SQL
+### SQL
 
-- Multi-table joins
-- Filtering
-- Aggregation
-- Grouping
-- Sorting
-- Calculated expressions
-- Conditional logic
-- Customer-level analysis
-- Product-level analysis
-- Revenue analysis
-- Inventory analysis
-- Geographic analysis
-- Customer segmentation
-- Profitability analysis
-- Customer lifetime value analysis
+- multi-table joins
+- subqueries
+- Common Table Expressions
+- filtering
+- aggregation
+- grouping
+- sorting
+- calculated expressions
+- conditional logic
+- ranking
+- customer-level analysis
+- product-level analysis
+- revenue analysis
+- inventory analysis
+- geographic analysis
+- customer segmentation
+- profitability analysis
+- historical CLV analysis
 
-## Power BI and DAX
+### Power BI and DAX
 
 - Power BI Desktop
 - Power Query
-- Relational data modelling
-- Table relationships
+- relational data modelling
+- table relationships
 - DAX measures
-- Filter context
-- Iterator functions
+- filter context
+- iterator functions
 - `SUMX`
 - `AVERAGEX`
 - `RELATED`
 - `DIVIDE`
 - `DISTINCTCOUNT`
 - `SELECTEDVALUE`
-- Dynamic What-if parameters
-- Measure-driven visual filtering
-- Conditional formatting
-- Interactive slicers
+- disconnected parameters
+- measure-driven visual filtering
+- conditional formatting
+- interactive slicers
 - Shape Map geographic analysis
-- Scatter analysis
+- scatter analysis
 - KPI reporting
-- Dashboard design
-- Detailed analytical reporting
+- dashboard design
+- detailed analytical reporting
 
-## Business and Analytical Skills
+### Business Analysis
 
-- Product performance analysis
-- Inventory and replenishment analysis
-- Customer segmentation
-- Customer behaviour analysis
-- Geographic market analysis
-- Customer profitability analysis
-- Historical customer lifetime value
-- Acquisition-spend scenario analysis
-- Data validation and reconciliation
-- Translating technical analysis into business findings
-- Developing actionable business recommendations
-- Identifying analytical limitations
+- product performance analysis
+- inventory and replenishment analysis
+- customer segmentation
+- customer behaviour analysis
+- geographic market analysis
+- customer profitability analysis
+- historical customer lifetime value
+- acquisition-spend scenario analysis
+- data validation and reconciliation
+- translating technical analysis into business findings
+- developing actionable recommendations
+- identifying analytical limitations
 
 ---
 
@@ -1095,20 +1154,52 @@ The geographic boundary source should be retained with the appropriate source an
 
 The completed project demonstrates an end-to-end analytical workflow:
 
-**SQLite → ETL → SQL Server → SQL Analysis → Validation → Power BI → DAX → Interactive Reporting → Business Insight**
+**SQLite → CSV → SSIS → SQL Server → Validation → T-SQL Analysis → Power BI → DAX → Interactive Reporting → Business Insight**
 
-The project moves beyond descriptive dashboard development by combining upstream database migration and SQL analysis with downstream business intelligence and decision-support reporting.
+The project moves beyond the original guided SQL exercise by combining upstream database migration and data-quality controls with extended SQL analysis and a multi-report Power BI business intelligence solution.
 
-The resulting solution addresses practical business questions including:
+The final solution demonstrates how relational data can be migrated, validated, reconciled, analysed, modelled, and transformed into decision-support reporting covering:
 
-- Which products generate the greatest commercial value?
-- Which products may require inventory attention?
-- How does historical demand compare with current stock?
-- Which customers generate the greatest revenue and profitability?
-- Which customer groups should marketing activity target?
-- Which geographic markets contribute the greatest value?
-- Which customers represent potential re-engagement opportunities?
-- What is the historical lifetime profitability of the customer base?
-- How could historical customer value inform acquisition-investment scenarios?
+- product performance
+- inventory management
+- replenishment
+- customer behaviour
+- customer segmentation
+- geographic markets
+- customer profitability
+- historical customer lifetime value
+- customer acquisition investment
 
-The project demonstrates how relational data can be migrated, validated, analysed, modelled, and transformed into an interactive business intelligence solution supporting product, inventory, customer, marketing, and acquisition decisions.
+---
+
+# Attribution and References
+
+## Dataquest
+
+This project originated from the **Customers and Products Analysis Using SQL** guided project by Dataquest.
+
+[Dataquest – Customers and Products Analysis Using SQL](https://www.dataquest.io/projects/guided-project-a-customers-and-products-analysis-using-sql/)
+
+Dataquest provided the original guided-project scenario and SQL learning objectives. The migration architecture, SQL Server implementation, SSIS packages, migration-validation framework, extended analytical work, Power BI models, DAX calculations, dashboards, reconciliation, and additional business analysis form the extended portfolio implementation contained in this repository.
+
+## Geographic Boundary Data
+
+The Geographic Marketing Analysis uses:
+
+`countries-110m.json`
+
+Source:
+
+[TopoJSON World Atlas](https://github.com/topojson/world-atlas)
+
+World Atlas provides pre-built TopoJSON derived from Natural Earth geographic data. `countries-110m.json` contains country and land geometry based on Natural Earth's Admin 0 country boundaries at 1:110m scale.
+
+The file is used solely to provide geographic boundary geometry for the Power BI Shape Map.
+
+---
+
+# Licence
+
+See the repository `LICENSE` file for the licence covering this project.
+
+External datasets and geographic assets remain subject to their respective source licences and attribution requirements.
